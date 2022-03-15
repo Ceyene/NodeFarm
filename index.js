@@ -2,6 +2,8 @@
 const fs = require('fs'); //we require fs -> file system, it returns an object 
 const http = require('http'); //this module gives us network capability
 const url = require('url'); //this module allows us to parse parameters from the url
+//3rd party modules
+const slugify = require('slugify'); //allows us to create slugs (slug: the last part of a url, string that identifies the resource displayed by the website)
 //my own modules
 const replaceTemplate = require('./modules/replaceTemplate');
 
@@ -57,6 +59,9 @@ const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.htm
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObject = JSON.parse(data);
+
+const slugs = dataObject.map(prod => slugify(prod.productName, {lower: true}));
+console.log(slugs);
 
 //this code will be executed each time that there is a new request
 const server = http.createServer((req, res) => {
